@@ -138,13 +138,13 @@ AND Monthly_Charge > 0
 )
 ```
 
-## Analysis and Dataviz using Power BI
+## Analysis
 
 From this moment on, once the table is clean and I have verified that it is functional, I began to create visualizations of the most notable data for analysis.
 
 The first thing is to create some new variables that I think are important in order to perform the analysis and share the data:
 
-> 1. A range of ages:
+> 1. A range of ages: This will help me group clients in a cleaner way. Also, my "boss" (Sebastián) talked about age ranges, so it is a way to start working with data that superiors need.
 
 ```sql
 CREATE OR REPLACE TABLE `lost-clients-portfolio.data_telco.table_general`AS (
@@ -157,9 +157,8 @@ CREATE OR REPLACE TABLE `lost-clients-portfolio.data_telco.table_general`AS (
     FROM `lost-clients-portfolio.data_telco.table_general`)
 ```
 
-> 2. A range of "referrals":
+> 2. A range of "referrals": One of Amalia's requests was to check the statistics of the number of referrals in relation to marital status. So I made a query to be able to extract this data from **Number_of_Referrals**.
 
-BigQuery's query:
 ```sql
 CREATE OR REPLACE TABLE `lost-clients-portfolio.data_telco.table_general` AS (
  SELECT *,
@@ -173,7 +172,12 @@ CREATE OR REPLACE TABLE `lost-clients-portfolio.data_telco.table_general` AS (
 )
 ```
 
-> 3. Groupings by "risk of drain" and avg_antiquity:
+> 3. Groupings by "risk of drain" and avg_antiquity: Sebastián's big concern was that clients who contracted the monthly modality (Month-to-Month) were the ones with the greatest risk of flight. This is why I establish, first of all, four groups according to Sebastián's hypothesis:
+
+> G1 (very high risk group): over 64 years old with a monthly contract; G2 (high risk group): those under 64 years of age with a monthly contract with one or more referrals; G3 (medium risk group): over 64 years of age with another type of contract (non-monthly) and one or more referrals; and G4 (low risk group): clients with less than 40 months of membership and non-monthly contracts.
+
+> At this point I had a small problem: when I created the table, the rest of the variables were eliminated. This is why in this code I applied **EXCEPT()** to the variables I had in mind.
+
 
 ```sql
 CREATE OR REPLACE  TABLE `lost-clients-portfolio.data_telco.table_general` AS (
@@ -194,6 +198,7 @@ a.Churn_Value,a.Total_Revenue,
 FROM `lost-clients-portfolio.data_telco.table_general` a
 )
 ```
+> At the same time, I made a query to be able to create a variable that would refer to the months that clients have been with the company. This way, I used the **Tenure_in_Months** variable to create a per-client average called **avg_antiquity**.
 
 ```sql
 CREATE OR REPLACE  TABLE `lost-clients-portfolio.data_telco.table_general` AS(
@@ -210,6 +215,7 @@ LEFT JOIN antiquity_base b
 ON a.Contract = b.Contract
 )
 ```
+> 4. Some operations: Here I already took advantage of the new variables to extract some data. The first of them was the estimated historical payment per client (**estimated_pay**), multiplying the average seniority and the total monthly revenue.
 
 ```sql
 CREATE OR REPLACE  TABLE `lost-clients-portfolio.data_telco.table_general` AS(
@@ -219,14 +225,20 @@ FROM `lost-clients-portfolio.data_telco.table_general` a
 )
 ```
 
+> I also made an estimate through quartiles to better organize the risk groups. In this case, I used an operator that I had already used in a previous exercise, I just substituted some variables.
+
 ```sql
 CREATE OR REPLACE TABLE `lost-clients-portfolio.data_telco.table_general` AS (
     SELECT *,NTILE(4) OVER( PARTITION BY Contract 
-                    ORDER BY estimated_income ASC) AS risk_group
+                    ORDER BY estimated_income ASC) AS estimated_quartile
     FROM  `lost-clients-portfolio.data_telco.tabla`
     WHERE Churn_Value=0
 )
 ```
 
-From now on, I will create some data visualizations to better understand customer churn and share it with Sebastian and Amalia. I have done this using Power BI:
+##  Dataviz using Power BI
+
+Now I will share the codes of the visualizations made with Power BI (I will upload the images of these over time, since now I still do not understand very well how to do it) and the results of the data analysis of the Telco case.
+
+
 
