@@ -240,5 +240,51 @@ CREATE OR REPLACE TABLE `lost-clients-portfolio.data_telco.table_general` AS (
 
 Now I will share the codes of the visualizations made with Power BI (I will upload the images of these over time, since now I still do not understand very well how to do it) and the results of the data analysis of the Telco case.
 
+> 1. **General Issues**: The first thing was to create visualizations that show an overview of customers. **image 1** corresponds to a graph that shows the five cities with the highest number of clients:
 
+![](https://github.com/LuisHRF/Telco_Case/blob/main/cities_clients.PNG)
 
+> At the same time, I have made a bar graph that combines the number of clients according to their marital status (single or married) and the total number of referrals by city. In this way, we see that the majority of clients are still married couples in most cities.
+
+![](https://github.com/LuisHRF/Telco_Case/blob/main/Clients_By_Married_And_City%C3%A7.PNG)
+
+> 2. **Sebastian's hypothesis**: Now I have to test Sebastian's hypothesis with data to see if it can really be an indication of customer loss. Let us remember that the CTO argued that the loss of clients was due, in addition to competition, to month-to-month contracts, which were the ones that retained the smallest number of clients.
+>
+> The first graph you create is one that shows the number of customers based on the type of contract they have (month-to-month, one year, or two years) with the average tenure. This will show which customers tend to stay with the company the longest. As can be seen, monthly customers have a much lower average retention rate than the rest: 20 months compared to 54 for bi-annual contracts and 40 for annual contracts.
+
+![](https://github.com/LuisHRF/Telco_Case/blob/main/Clients_By_Contract_Antiquity.PNG)
+
+> The next step I have followed is to review the risk groups. To remember, the risk groups are divided into four: G1, G2, G3 and G4; being from highest to lowest risk. The visualization shows the percentage of membership in these risk groups according to the age of the client, so that we determine which age range is the most "fleeting".
+
+> As can be seen, the clients most at risk of unsubscribing are those over 64 years of age.
+
+![](https://github.com/LuisHRF/Telco_Case/blob/main/risk_by_age.PNG)
+
+> From these two graphs, I have created a third that brings together the number of clients by age range with the type of contract and their risk of unsubscribing. Again, this shows that the only age range that belongs to G1 is the month-to-month customer over 64 years old. At the same time, monthly clients are the ones most at risk of absconding.
+
+![](https://github.com/LuisHRF/Telco_Case/blob/main/risk_by_contract_age.PNG)
+
+> Finally, I created a graph that shows the specific number of clients at risk of churn by contract type. In this way it can be seen visually and very quickly that the majority of clients at risk are in monthly contracts, while annual and bi-annual contracts are much safer.
+
+![](https://github.com/LuisHRF/Telco_Case/blob/main/risk_lvl_clients.PNG)
+
+## Analysis and proposal
+
+Sebastián's hypothesis is demonstrated, therefore we can determine that:
+
+- The majority of clients are between month-to-month and two-year contracts
+- The greatest risk of "leakage" is found in monthly contracts, with 73% less permanence with the company
+- G1, the highest risk group, is only found in monthly clients who are over 61 years of age
+- G2, the risk group, is abundant in the age range between 21 to 64 years among monthly clients
+
+Now yes: it is time to act. Based on this data, my recommendation as a data analyst are the following proposals:
+
+- We must try to displace the G1 of those over 61 years of age, so a specific annual contract would be created for this type of client. With this we could adapt the contract to the specific type of client
+- Many of them with a low number of references, we could focus on creating annual plans for nursing homes. In this way we would expand the spectrum and be able to add higher contracts and avoid the loss of clients.
+- Since the average length of stay is less than 20 months (1 year and 8 months) in monthly contracts and the largest number of clients are between 21 and 60 years old, it would create a type of promotion to improve the plan. For example, if you complete a year with the monthly contract, you can upgrade it to the annual or bi-annual contract with some type of advantage
+
+## Thanks
+
+If you've made it this far, thank you very much! I continue on my path to be able to dedicate myself to data analysis. In this case, so complex for me, I have used two tools: SQL (BigQuery) and Power BI (DataViz), with which I am becoming familiar.
+
+Any advice or recommendation is welcome. A hug!
